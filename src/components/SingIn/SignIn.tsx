@@ -1,19 +1,31 @@
 import React from 'react';
+import {connect} from "react-redux";
+import {RootState} from "../../redux/store";
+import {IUser} from "../../redux/SignInReducer";
 
-const SignIn = () => {
+
+interface IMapStateToProps {
+    data: IUser
+}
+
+const SignIn = (props: IMapStateToProps) => {
     return (
         <div>
             <div>
-                <input type="email"/>
+                <input type="email" placeholder={props.data.email}/>
             </div>
             <div>
-                <input type="password"/>
+                <input type="password" placeholder={props.data.password}/>
             </div>
             <div>
-                <input type="checkbox"/> <span>Remember me</span>
+                <input type="checkbox" checked={props.data.rememberMe}/> <span>Remember me</span>
             </div>
         </div>
     );
 };
 
-export default SignIn;
+const mapStateToProps = (state:RootState): IMapStateToProps => ({
+    data: state.signIn
+})
+
+export default connect(mapStateToProps, {})(SignIn);
