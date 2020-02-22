@@ -2,6 +2,8 @@ import React, {ChangeEvent} from 'react';
 import {connect} from "react-redux";
 import {RootState} from "../../redux/store";
 import {ChangeEmail, ChangePassword, changeStatus, IUser} from "../../redux/SignInReducer";
+import {FORGOT_PATH, REGISTER_PATH} from "../Header/Routes";
+import {NavLink} from "react-router-dom";
 
 
 interface IMapStateToProps {
@@ -31,16 +33,22 @@ const SignIn = (props: IMapStateToProps & IMapDispatchToProps) => {
     return (
         <div>
             <div>
-                <input type="email" placeholder={props.data.email} value={props.data.email} onChange={onChangeEmail}/>
+                <input type="email" placeholder="Enter your Email" value={props.data.email} onChange={onChangeEmail}/>
             </div>
             <div>
-                <input type="text" placeholder={props.data.password} value={props.data.password} onChange={onChangePassword}/>
+                <input type="text" placeholder="Enter your password" value={props.data.password} onChange={onChangePassword}/>
+            </div>
+            <div>
+                <NavLink to={FORGOT_PATH}>Forgot password?</NavLink>
             </div>
             <div>
                 <input type="checkbox" checked={props.data.rememberMe} onChange={onChangeStatus}/><span>Remember me</span>
             </div>
             <div>
                 <button>Sing In</button>
+            </div>
+            <div>
+                <NavLink to={REGISTER_PATH}>Registration</NavLink>
             </div>
         </div>
     );

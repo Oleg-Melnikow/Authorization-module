@@ -5,15 +5,14 @@ const instance = axios.create({
 });
 
 export interface Data {
-    id: string,
     email: string,
+    name: string,
+    isAdmin: boolean,
     password: string,
     rememberMe: boolean,
-    isAdmin: boolean,
-    created: string,
-    updated: string,
     token: string,
     tokenDeathTime: string,
+    _id: string
 
 }
 
@@ -21,9 +20,9 @@ export interface IResponseData {
     users: Array<Data>
 }
 
-export const api = {
-    async getUsers(): Promise<Array<Data>> {
-        let result = await instance.get<IResponseData>("users")
+export const signInAPI = {
+    async login(email: string, password: string, rememberMe: boolean ): Promise<Array<Data>> {
+        let result = await instance.post<IResponseData>(`auth/login`,{email, password, rememberMe})
         return result.data.users
     }
 }
