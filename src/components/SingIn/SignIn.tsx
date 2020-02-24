@@ -1,7 +1,7 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, MouseEvent} from 'react';
 import {connect} from "react-redux";
 import {RootState} from "../../redux/store";
-import {ChangeEmail, ChangePassword, changeStatus, IUser} from "../../redux/SignInReducer";
+import {ChangeEmail, ChangePassword, changeStatus, IUser, login} from "../../redux/SignInReducer";
 import {FORGOT_PATH, REGISTER_PATH} from "../Header/Routes";
 import {NavLink} from "react-router-dom";
 
@@ -14,6 +14,7 @@ interface IMapDispatchToProps {
     changeStatus: (e:boolean) => void
     ChangeEmail: (e: string) => void
     ChangePassword: (e:string) => void
+    login: (email: string, password: string, rememberMe: boolean) => void
 }
 
 const SignIn = (props: IMapStateToProps & IMapDispatchToProps) => {
@@ -28,6 +29,10 @@ const SignIn = (props: IMapStateToProps & IMapDispatchToProps) => {
 
     const onChangePassword = (e:  ChangeEvent<HTMLInputElement>) => {
         props.ChangePassword(e.currentTarget.value)
+    }
+    const logIn = (e:MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault()
+        console.log(props.login(props.data.email, props.data.password, props.data.rememberMe))
     }
 
     return (
@@ -45,7 +50,7 @@ const SignIn = (props: IMapStateToProps & IMapDispatchToProps) => {
                 <input type="checkbox" checked={props.data.rememberMe} onChange={onChangeStatus}/><span>Remember me</span>
             </div>
             <div>
-                <button>Sing In</button>
+                <button onClick={logIn}>Sing In</button>
             </div>
             <div>
                 <NavLink to={REGISTER_PATH}>Registration</NavLink>
@@ -58,4 +63,4 @@ const mapStateToProps = (state:RootState): IMapStateToProps => ({
     data: state.signIn
 })
 
-export default connect(mapStateToProps, {changeStatus, ChangeEmail, ChangePassword})(SignIn);
+export default connect(mapStateToProps, {changeStatus, ChangeEmail, ChangePassword, login})(SignIn);

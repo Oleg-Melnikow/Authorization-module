@@ -16,13 +16,10 @@ export interface Data {
 
 }
 
-export interface IResponseData {
-    users: Array<Data>
-}
 
 export const signInAPI = {
-    async login(email: string, password: string, rememberMe: boolean ): Promise<Array<Data>> {
-        let result = await instance.post<IResponseData>(`auth/login`,{email, password, rememberMe})
-        return result.data.users
+    async login(email: string, password: string, rememberMe: boolean ): Promise<Data> {
+        let result = await instance.post<Data>(`auth/login`,{email, password, rememberMe})
+        return result.data
     }
 }

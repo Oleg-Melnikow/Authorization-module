@@ -43,8 +43,8 @@ export interface IUser {
 }
 
 const InitialState: IUser = {
-    email: "email",
-    password: "pfff",
+    email: "nikolas@gmail.com",
+    password: "1234567890",
     rememberMe: true
 };
 
@@ -56,7 +56,8 @@ type IActions = ISignInActions
 
 export const SignInReducer = (state = InitialState, action: IActions) => {
     switch (action.type) {
-        case LOGIN_PAGE: {
+        case LOGIN_PAGE:
+        case LOGIN:{
             return {
                 ...state
             }
@@ -79,7 +80,6 @@ export const SignInReducer = (state = InitialState, action: IActions) => {
                 password: action.password
             }
         }
-
         default: {
             return state;
         }
@@ -106,7 +106,8 @@ export const Login = (email: string, password: string, rememberMe: boolean): ILo
     data: {email, password, rememberMe}
 })
 
-export const login = (email: string, password: string, rememberMe: boolean) => async (dispatch: Dispatch<any>, getState: () => RootState) => {
+export const login = (email: string, password: string, rememberMe: boolean) =>
+    async ( dispatch:Dispatch, getState: () => RootState) => {
     let value = await signInAPI.login(email, password, rememberMe)
-
+        dispatch(Login(value.email, value.password, value.rememberMe))
 }
