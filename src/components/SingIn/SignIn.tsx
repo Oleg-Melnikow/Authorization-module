@@ -1,9 +1,9 @@
-import React, {ChangeEvent, MouseEvent} from 'react';
+import React, {ChangeEvent, MouseEvent, useState} from 'react';
 import {connect} from "react-redux";
 import {RootState} from "../../redux/store";
-import {ChangeEmail, ChangePassword, changeStatus, IUser, login} from "../../redux/SignInReducer";
-import {FORGOT_PATH, REGISTER_PATH} from "../Header/Routes";
-import {NavLink} from "react-router-dom";
+import {ChangeEmail, ChangePassword, changeStatus, IUser, login, Status} from "../../redux/SignInReducer";
+import {FORGOT_PATH, PROFILE_PATH, REGISTER_PATH} from "../Header/Routes";
+import {NavLink, Redirect} from "react-router-dom";
 
 
 interface IMapStateToProps {
@@ -11,46 +11,73 @@ interface IMapStateToProps {
 }
 
 interface IMapDispatchToProps {
-    changeStatus: (e:boolean) => void
+    changeStatus: (e: boolean) => void
     ChangeEmail: (e: string) => void
-    ChangePassword: (e:string) => void
+    ChangePassword: (e: string) => void
+    Status: (e: null | boolean) => void
     login: (email: string, password: string, rememberMe: boolean) => void
 }
 
 const SignIn = (props: IMapStateToProps & IMapDispatchToProps) => {
 
-    const onChangeStatus = (e:  ChangeEvent<HTMLInputElement>) => {
+    let [isDisabled, setDisabled] = useState(false)
+    let [isError, setError] = useState(false)
+
+    const onChangeStatus = (e: ChangeEvent<HTMLInputElement>) => {
         props.changeStatus(e.currentTarget.checked)
     }
 
-    const onChangeEmail = (e:  ChangeEvent<HTMLInputElement>) =>{
-        props.ChangeEmail( e.currentTarget.value)
+    const onChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
+        props.ChangeEmail(e.currentTarget.value)
+        if(e.currentTarget.value ===""){
+            setError(true)
+        } else{
+            setError(false)
+        }
     }
 
-    const onChangePassword = (e:  ChangeEvent<HTMLInputElement>) => {
+    const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
         props.ChangePassword(e.currentTarget.value)
     }
-    const logIn = (e:MouseEvent<HTMLButtonElement>) => {
+    const logIn = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
+        props.Status(false)
         console.log(props.login(props.data.email, props.data.password, props.data.rememberMe))
+        setDisabled(true)
+
+    }
+
+    if (props.data.isAuth) {
+        return <Redirect to={PROFILE_PATH}/>
     }
 
     return (
         <div>
+            <h2>Sing In</h2>
+            {props.data.isStatus !== null
+                ? <span>{props.data.isStatus
+                    ? <span style={{color: "green"}}>Success!</span>
+                    : <span style={{color: "yellow"}}>Loading...</span>}</span>
+                : null}
             <div>
-                <input type="email" placeholder="Enter your Email" value={props.data.email} onChange={onChangeEmail}/>
+                <input required={true} type="email" placeholder="Enter your Email" value={props.data.email} onChange={onChangeEmail}/>
+                <div>
+                    {isError ? <span style={{color: "red"}}>Empty input</span> : null}
+                </div>
             </div>
             <div>
-                <input type="text" placeholder="Enter your password" value={props.data.password} onChange={onChangePassword}/>
+                <input required={true} type="text" placeholder="Enter your password" value={props.data.password}
+                       onChange={onChangePassword}/>
             </div>
             <div>
                 <NavLink to={FORGOT_PATH}>Forgot password?</NavLink>
             </div>
             <div>
-                <input type="checkbox" checked={props.data.rememberMe} onChange={onChangeStatus}/><span>Remember me</span>
+                <input type="checkbox" checked={props.data.rememberMe}
+                       onChange={onChangeStatus}/><span>Remember me</span>
             </div>
             <div>
-                <button onClick={logIn}>Sing In</button>
+                <button disabled={isDisabled} onClick={logIn}>Sing In</button>
             </div>
             <div>
                 <NavLink to={REGISTER_PATH}>Registration</NavLink>
@@ -59,8 +86,8 @@ const SignIn = (props: IMapStateToProps & IMapDispatchToProps) => {
     );
 };
 
-const mapStateToProps = (state:RootState): IMapStateToProps => ({
+const mapStateToProps = (state: RootState): IMapStateToProps => ({
     data: state.signIn
 })
 
-export default connect(mapStateToProps, {changeStatus, ChangeEmail, ChangePassword, login})(SignIn);
+export default connect(mapStateToProps, {changeStatus, ChangeEmail, ChangePassword, Status, login})(SignIn);
