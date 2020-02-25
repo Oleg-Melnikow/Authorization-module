@@ -16,10 +16,21 @@ export interface Data {
 
 }
 
+export interface IForgotData {
+    email: string
+}
+
 
 export const signInAPI = {
     async login(email: string, password: string, rememberMe: boolean ): Promise<Data> {
         let result = await instance.post<Data>(`auth/login`,{email, password, rememberMe})
+        return result.data
+    }
+}
+
+export const forgotAPI = {
+    async forgot(email: string): Promise<IForgotData> {
+        let result = await instance.post(`auth/forgot`, {email})
         return result.data
     }
 }
