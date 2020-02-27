@@ -146,11 +146,17 @@ export const Login = (email: string, password: string, rememberMe: boolean): ILo
 
 export const login = (email: string, password: string, rememberMe: boolean) =>
     async ( dispatch:Dispatch, getState: () => RootState) => {
-    let value = await signInAPI.login(email, password, rememberMe)
+    try {
+        let value = await signInAPI.login(email, password, rememberMe)
         dispatch(Login(value.email, value.password, value.rememberMe))
         dispatch(Status(true))
         await setInterval(() => {
             dispatch(Auth(true))
         }, 1000)
         console.log(value)
+    }
+    catch (e) {
+        console.log(e.response.data.error)
+    }
+
 }

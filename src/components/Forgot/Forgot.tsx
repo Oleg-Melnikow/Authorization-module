@@ -1,64 +1,40 @@
-import React, {ChangeEvent, MouseEvent} from 'react';
+import React, {MouseEvent} from 'react';
 import {SIGN_IN_PATH} from "../Header/Routes";
 import {NavLink} from "react-router-dom";
-import {connect} from "react-redux";
-import {RootState} from "../../redux/store";
-import {ForgotThunk, SetError, SetForgot, StatusForgot} from "../../redux/ForgotReducer";
+import InputEmail from "../InputEmail/InputEmail"
+import {IMapStateToProps} from "./ForgotContainer";
+import style from "./Forgot.module.css"
 
-
-interface IMapStateToProps {
-    email: string,
-    error: string | null,
-    isStatus: boolean | null
+interface IProps {
+    forgot: (e: MouseEvent<HTMLButtonElement>) => void
+    SetValue: (e: string) => void
 }
 
-interface IMapDispatchToProps {
-    SetForgot: (e: string) => void,
-    ForgotThunk: (e: string) => void,
-    StatusForgot: (e: boolean | null) => void
-}
+type Props = IMapStateToProps & IProps
 
-const Forgot = (props: IMapStateToProps & IMapDispatchToProps) => {
-
-    const changeEmail = (e: ChangeEvent<HTMLInputElement>) => {
-        props.SetForgot(e.currentTarget.value)
-    }
-
-    const forgot = (e: MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault()
-        console.log(props.ForgotThunk(props.email))
-        props.StatusForgot(false)
-    }
+const Forgot = (props: Props) => {
 
     return (
-        <div>
+        <div className={style.container}>
             <div>
                 <h2>Forgot</h2>
             </div>
-            <div style={{padding: "10px"}}>
+            <div className={style.text}>
                 {props.isStatus !== null
-                    ? <span style={{fontSize: "24px"}}>{props.isStatus
-                        ? <span style={{color: "darkRed"}}>{props.error}</span>
+                    ? <span>{props.isStatus
+                        ? <span style={{color: "red"}}>{props.error}</span>
                         : <span style={{color: "yellow"}}>Loading...</span>}</span>
                     : null}
             </div>
+            <InputEmail SetValue={props.SetValue} email={props.email} error={props.error}/>
             <div>
-                <input type="email" value={props.email} onChange={changeEmail}/>
+                <button className={style.button} onClick={props.forgot}>Send email</button>
             </div>
             <div>
-                <button onClick={forgot}>Send email</button>
-            </div>
-            <div>
-                <NavLink to={SIGN_IN_PATH}>Sign In</NavLink>
+                <NavLink className={style.link} to={SIGN_IN_PATH}>Sign In</NavLink>
             </div>
         </div>
     );
 };
 
-const mapStateToProps = (state: RootState): IMapStateToProps => ({
-    email: state.forgot.email,
-    error: state.forgot.error,
-    isStatus: state.forgot.isStatus
-})
-
-export default connect(mapStateToProps, {SetForgot, ForgotThunk, SetError, StatusForgot})(Forgot);
+export default Forgot;
