@@ -30,6 +30,7 @@ const InputEmail = (props: IProps) => {
     }
     const validated = () => {
         SetValid(false)
+        SetInvalid(false)
     }
 
     return (

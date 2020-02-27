@@ -9,6 +9,7 @@ const CHANGE_PASSWORD = "SingIn/CHANGE_PASSWORD"
 const LOGIN = "SingIn/LOGIN"
 const STATUS = "SingIn/STATUS"
 const AUTH = "SingIn/AUTH"
+const SET_ERROR = "SingIn/SET_ERROR"
 
 interface ISignInActions {
     type: typeof LOGIN_PAGE
@@ -39,6 +40,11 @@ interface IAuth {
     isAuth: boolean
 }
 
+interface IErrorActions {
+    type: typeof SET_ERROR,
+    error: string | null
+}
+
 interface ILogin {
     type: typeof LOGIN,
     data: {
@@ -53,7 +59,8 @@ export interface IUser {
     password: string,
     rememberMe: boolean,
     isAuth: boolean
-    isStatus: null | boolean
+    isStatus: null | boolean,
+    error: null | string
 }
 
 const InitialState: IUser = {
@@ -61,7 +68,8 @@ const InitialState: IUser = {
     password: "1234567890",
     rememberMe: true,
     isAuth: false,
-    isStatus: null
+    isStatus: null,
+    error: null
 };
 
 type IActions = ISignInActions
@@ -71,6 +79,7 @@ type IActions = ISignInActions
     | ILogin
     | IStatus
     | IAuth
+    | IErrorActions
 
 export const SignInReducer = (state = InitialState, action: IActions) => {
     switch (action.type) {
@@ -115,6 +124,12 @@ export const SignInReducer = (state = InitialState, action: IActions) => {
                 isAuth: action.isAuth
             }
         }
+        case SET_ERROR: {
+            return {
+                ...state,
+                error: action.error
+            }
+        }
         default: {
             return state;
         }
@@ -138,6 +153,7 @@ export const ChangePassword = (password: string): IChangePassword => ({
 
 export const Status = (isStatus: null | boolean): IStatus => ({type: STATUS, isStatus})
 export const Auth = (isAuth: boolean): IAuth => ({type: AUTH, isAuth})
+export const SetError = (error: string | null): IErrorActions => ({type: SET_ERROR, error})
 
 export const Login = (email: string, password: string, rememberMe: boolean): ILogin => ({
     type: LOGIN,
@@ -156,6 +172,8 @@ export const login = (email: string, password: string, rememberMe: boolean) =>
         console.log(value)
     }
     catch (e) {
+        dispatch(Status(true))
+        dispatch(SetError(e.response.data.error))
         console.log(e.response.data.error)
     }
 
