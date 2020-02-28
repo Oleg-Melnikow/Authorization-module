@@ -8,7 +8,7 @@ const Header = () => {
 
     return (
         <div className={style.wrapper}>
-            <button onClick={() => setShow(!show)}>{show ? 'hide dev header' : 'show dev header'}</button>
+            <button className={style.button} onClick={() => setShow(!show)}>{show ? 'hide dev header' : 'show dev header'}</button>
             {show && <>
                 <NavLink to={SIGN_IN_PATH}>SingIn</NavLink>
                 <NavLink to={REGISTER_PATH}>Registration</NavLink>

@@ -6,6 +6,7 @@ import {FORGOT_PATH, PROFILE_PATH, REGISTER_PATH} from "../Header/Routes";
 import {NavLink, Redirect} from "react-router-dom";
 import InputEmail from "../InputEmail/InputEmail";
 import InputPassword from "../InputPassword/InputPassword";
+import style from "../Forgot/Forgot.module.css";
 
 
 
@@ -62,17 +63,17 @@ const SignIn = (props: IMapStateToProps & IMapDispatchToProps) => {
 
             <InputPassword password={props.data.password} ChangePassword={props.ChangePassword}/>
             <div>
-                <NavLink to={FORGOT_PATH}>Forgot password?</NavLink>
+                <NavLink className={style.link} to={FORGOT_PATH}>Forgot password?</NavLink>
             </div>
             <div>
                 <input type="checkbox" checked={props.data.rememberMe}
-                       onChange={onChangeStatus}/><span>Remember me</span>
+                       onChange={onChangeStatus}/><span style={{color: "white"}}>Remember me</span>
             </div>
             <div>
                 <button disabled={isDisabled} onClick={logIn}>Sing In</button>
             </div>
             <div>
-                <NavLink to={REGISTER_PATH}>Registration</NavLink>
+                <NavLink className={style.link} to={REGISTER_PATH}>Registration</NavLink>
             </div>
         </div>
     );

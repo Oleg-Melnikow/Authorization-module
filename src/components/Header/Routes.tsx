@@ -4,6 +4,7 @@ import SignIn from "../SingIn/SignIn";
 import Registration from "../Registration/Registration";
 import Profile from "../Profile/Profile";
 import ForgotContainer from "../Forgot/ForgotContainer";
+import style from "./Header.module.css"
 
 export const START_PATH = '/login-register-forgot/';
 export const SIGN_IN_PATH = `${START_PATH}sign-in`;
@@ -13,7 +14,7 @@ export const PROFILE_PATH = `${START_PATH}profile`;
 
 const Routes = () => {
     return (
-        <div>
+        <div className={style.container}>
             <Route exact path={START_PATH} render={() => <Redirect to={SIGN_IN_PATH}/>}/>
             <Route path={SIGN_IN_PATH} render={() => <SignIn/>}/>
             <Route path={REGISTER_PATH} render={() => <Registration/>}/>
