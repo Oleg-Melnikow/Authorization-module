@@ -17,7 +17,7 @@ const Forgot = (props: Props) => {
     return (
         <div className={style.container}>
             <div>
-                <h2>Forgot</h2>
+                <h2 className={style.header}>Forgot</h2>
             </div>
             <div className={style.text}>
                 {props.isStatus !== null

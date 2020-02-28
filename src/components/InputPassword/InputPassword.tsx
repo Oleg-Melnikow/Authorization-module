@@ -14,7 +14,7 @@ const InputPassword = (props: IProps) => {
     const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
         props.ChangePassword(e.currentTarget.value)
         let email = e.currentTarget.value
-        let pattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,}$"
+        let pattern = "^(?=.*[0-9])(?=.*[a-z]).{8,}$"
         if (email.match(pattern)) {
             SetValidet(true)
             SetInvalid(false)
@@ -30,17 +30,18 @@ const InputPassword = (props: IProps) => {
 
     const validated = () => {
         SetInvalid(false)
+        SetValidet(false)
     }
 
     return (
         <div>
             <input required={true} type="password" placeholder="Enter your password" value={props.password}
-    onChange={onChangePassword} onBlur={validated}/>
-    <div className={style.validation}>
-        {valid ? <span style={{color: "#00ff00"}}>Your Password in Valid.</span> : null}
-    {invalid ? <span style={{color: "#ff0000"}}>Please Enter Valid Password</span> : null}
-    </div>
-    </div>
+                   onChange={onChangePassword} onBlur={validated}/>
+            <div className={style.validation}>
+                {valid ? <span style={{color: "#00ff00"}}>Your Password in Valid.</span> : null}
+                {invalid ? <span style={{color: "#ff0000"}}>Please Enter Valid Password</span> : null}
+            </div>
+        </div>
     )
 }
 

@@ -8,6 +8,7 @@ import InputEmail from "../InputEmail/InputEmail";
 import InputPassword from "../InputPassword/InputPassword";
 
 
+
 interface IMapStateToProps {
     data: IUser
 }
@@ -23,17 +24,21 @@ interface IMapDispatchToProps {
 const SignIn = (props: IMapStateToProps & IMapDispatchToProps) => {
 
     let [isDisabled, setDisabled] = useState(false)
+    let [error, setError] = useState(false)
 
     const onChangeStatus = (e: ChangeEvent<HTMLInputElement>) => {
         props.changeStatus(e.currentTarget.checked)
     }
-
     const logIn = (e: MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault()
-        props.Status(false)
-        console.log(props.login(props.data.email, props.data.password, props.data.rememberMe))
-        setDisabled(true)
-
+        setError(false)
+        if(props.data.password.length > 7) {
+            e.preventDefault()
+            props.Status(false)
+            console.log(props.login(props.data.email, props.data.password, props.data.rememberMe))
+            setDisabled(true)
+        } else {
+            setError(true)
+        }
     }
 
     if (props.data.isAuth) {
@@ -44,6 +49,7 @@ const SignIn = (props: IMapStateToProps & IMapDispatchToProps) => {
         <div>
             <h2>Sing In</h2>
             <div>
+                {error ? "Passwords don't match!" : null}
                 {props.data.isStatus !== null
                     ? <span>{props.data.isStatus
                         ?  props.data.error ? <span style={{color: "red"}}>{props.data.error}</span> : <span style={{color: "green"}}>Success!</span>
@@ -51,7 +57,7 @@ const SignIn = (props: IMapStateToProps & IMapDispatchToProps) => {
                     : null}
             </div>
             <div>
-                <InputEmail SetValue={props.ChangeEmail} email={props.data.email} />
+                <InputEmail SetValue={props.ChangeEmail} email={props.data.email}/>
             </div>
 
             <InputPassword password={props.data.password} ChangePassword={props.ChangePassword}/>
