@@ -36,7 +36,7 @@ const InputEmail = (props: IProps) => {
     return (
         <div>
             <input type="email" value={props.email} required={true}
-                   onChange={changeEmail} onBlur={validated}/>
+                   onChange={changeEmail} onBlur={validated} placeholder="Enter your email"/>
             <div
                 className={style.validation}>
                 {valid ? <span style={{color: "#00ff00"}}>Your Email Address in Valid.</span> : null}

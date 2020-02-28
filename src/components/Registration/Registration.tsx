@@ -38,7 +38,7 @@ const Registration = (props: IMapStateToProps & IMapDispatchToProps) => {
     const register = (e: MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         setError(false)
-        if(props.passwordFirst === props.passwordSecond){
+        if (props.passwordFirst === props.passwordSecond) {
             props.StatusReg(false)
             console.log(props.RegistrationThunk(props.email, props.passwordFirst))
             setDisabled(true)
@@ -51,16 +51,19 @@ const Registration = (props: IMapStateToProps & IMapDispatchToProps) => {
     return (
         <div>
             <h2>Registration</h2>
-            {error ? "Password not valid! must be more than 7 characters..." : null}
-            {props.isStatus !== null
-                ? <span>{props.isStatus
-                    ?  props.error ? <span style={{color: "red"}}>{props.error}</span> : <span style={{color: "green"}}>Success!</span>
-                    : <span style={{color: "yellow"}}>Loading...</span>}</span>
-                : null}
+            <div style={{padding: "10px", color: "red", fontSize: "24px"}}>
+                {error ? "Password not valid! must be more than 7 characters..." : null}
+                {props.isStatus !== null
+                    ? <span>{props.isStatus
+                        ? props.error ? <span style={{color: "red"}}>{props.error}</span>
+                            : <span style={{color: "green"}}>Success!</span>
+                        : <span style={{color: "yellow"}}>Loading...</span>}</span>
+                    : null}
+            </div>
             <InputEmail SetValue={props.ChangeEmailReg} email={props.email}/>
             <InputPassword password={props.passwordFirst} ChangePassword={props.ChangePassword}/>
             <InputPassword password={props.passwordSecond} ChangePassword={props.ChangePasswordSecond}/>
-            <button disabled={isDisabled}  onClick={register}>Registration</button>
+            <button disabled={isDisabled} onClick={register}>Registration</button>
             <div>
                 <NavLink className={style.link} to={SIGN_IN_PATH}>Sign In</NavLink>
             </div>
@@ -76,4 +79,10 @@ const mapStateToProps = (state: RootState): IMapStateToProps => ({
     isStatus: state.registration.isStatus
 })
 
-export default connect(mapStateToProps, {ChangeEmailReg, ChangePassword, ChangePasswordSecond, RegistrationThunk, StatusReg})(Registration);
+export default connect(mapStateToProps, {
+    ChangeEmailReg,
+    ChangePassword,
+    ChangePasswordSecond,
+    RegistrationThunk,
+    StatusReg
+})(Registration);

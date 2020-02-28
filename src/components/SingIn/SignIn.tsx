@@ -49,11 +49,11 @@ const SignIn = (props: IMapStateToProps & IMapDispatchToProps) => {
     return (
         <div>
             <h2>Sing In</h2>
-            <div>
+            <div style={{padding: "10px", fontSize: "24px", color: "red"}}>
                 {error ? "Passwords don't match!" : null}
                 {props.data.isStatus !== null
                     ? <span>{props.data.isStatus
-                        ?  props.data.error ? <span style={{color: "red"}}>{props.data.error}</span> : <span style={{color: "green"}}>Success!</span>
+                        ?  props.data.error ? <span style={{color: "red"}}>{props.data.error}</span> : <span style={{color: "#00d900"}}>Success!</span>
                         : <span style={{color: "yellow"}}>Loading...</span>}</span>
                     : null}
             </div>

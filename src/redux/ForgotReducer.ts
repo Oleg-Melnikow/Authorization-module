@@ -28,7 +28,7 @@ interface IForgotState {
 }
 
 const InitialState: IForgotState = {
-    email: "ssss@ukr.net",
+    email: "nikolas@gmail.com",
     error: null,
     isStatus: null
 };

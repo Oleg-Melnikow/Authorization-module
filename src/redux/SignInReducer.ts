@@ -65,7 +65,7 @@ export interface IUser {
 
 const InitialState: IUser = {
     email: "nikolas@gmail.com",
-    password: "1234567890",
+    password: "12345678",
     rememberMe: true,
     isAuth: false,
     isStatus: null,
